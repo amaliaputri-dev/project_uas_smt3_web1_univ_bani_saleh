@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db   = "database_name";
+$db   = "uas_univ";
 
 $conn = mysqli_connect($host, $user, $pass, $db);
 

@@ -1,3 +1,7 @@
 <?php
-// redirect to login page
-header("Location: auth/login.php");
+session_start();
+
+if (!isset($_SESSION['login'])) {
+    header("Location: auth/login.php");
+    exit();
+}
