@@ -1,21 +1,37 @@
 <?php
-include '../config/koneksi.php';
 session_start();
+include '../config/koneksi.php';
 
-$username = $_POST['username'] ?? '';
-$password = $_POST['password'] ?? '';
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-$query = "SELECT * FROM users WHERE email = '$username' AND password = '$password'";
-$conn = mysqli_connect("localhost", "root", "", "uas_univ");
-$stmt = $conn->prepare($query);
+// validasi POST
+if (!isset($_POST['username'], $_POST['password'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$username = $_POST['username'];
+$password = $_POST['password'];
+
+$sql = "SELECT id FROM users WHERE email = ? AND password = MD5(?)";
+$stmt = $conn->prepare($sql);
+
+if (!$stmt) {
+    die("Prepare error: " . $conn->error);
+}
+
+$stmt->bind_param("ss", $username, $password);
 $stmt->execute();
-$result = $stmt->get_result();
-if ($result->num_rows > 0) {
+$stmt->store_result(); // ← PENTING
+
+if ($stmt->num_rows === 1) {
     $_SESSION['login'] = true;
+    $_SESSION['email'] = $username;
+
     header("Location: ../dashboard/index.php");
     exit();
 } else {
-    echo "<script>alert('Login gagal. Periksa username dan password Anda.'); window.location.href = 'login.php';</script>";
+    header("Location: login.php?error=1");
+    exit();
 }
-
-$stmt->close();

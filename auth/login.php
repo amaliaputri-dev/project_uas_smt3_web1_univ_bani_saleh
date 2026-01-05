@@ -9,7 +9,7 @@
 
 <body>
     <div class="container">
-        <form action="login_proses.php">
+        <form action="login_proses.php" method="post">
             <h2>Login</h2>
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
