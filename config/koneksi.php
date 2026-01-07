@@ -9,3 +9,5 @@ $conn = mysqli_connect($host, $user, $pass, $db);
 if (!$conn) {
     die("koneksi gagal: " . mysqli_connect_error());
 }
+
+// database bisa diganti di variabel $db
